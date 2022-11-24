@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="events" author="karpovich.e">
+        <sql>
+            CREATE TABLE EVENTS(
+            id serial PRIMARY KEY,
+            theme varchar(300) NOT NULL,
+            description varchar(300) NOT NULL,
+            organizer varchar(100) NOT NULL,
+            time_spending timestamp WITH time ZONE DEFAULT CURRENT_DATE,
+            location varchar(200) NOT NULL,
+            date_of_creation timestamp WITH time ZONE DEFAULT CURRENT_DATE,
+            date_of_change timestamp WITH time ZONE DEFAULT CURRENT_DATE
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

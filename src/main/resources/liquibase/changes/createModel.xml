@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="model-events" author="karpovich.e">
+        <sql>
+            INSERT INTO Events (theme, description, organizer, time_spending, location)
+            VALUES ('SomeThing', 'Discuss', 'Oracle', '1999-04-10T18:34:51.464+00:00', 'Belarus'),
+            ('SomeThing1', 'Discuss1', 'Apple', '2000-11-11T18:34:51.464+00:00', 'Norway'),
+            ('SomeThing2', 'Discuss2', 'Samsung', '2005-11-11T18:34:51.464+00:00', 'England'),
+            ('SomeThing3', 'Discuss3', 'Sony' , '2022-11-11T18:34:51.464+00:00', 'USA')
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
