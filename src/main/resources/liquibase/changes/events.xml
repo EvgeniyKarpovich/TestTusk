@@ -5,7 +5,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet id="events" author="karpovich.e">
+    <changeSet id="events-1" author="karpovich.e">
         <sql>
             CREATE TABLE EVENTS(
             id serial PRIMARY KEY,
@@ -17,6 +17,13 @@
             date_of_creation timestamp WITH time ZONE DEFAULT CURRENT_DATE,
             date_of_change timestamp WITH time ZONE DEFAULT CURRENT_DATE
             );
+        </sql>
+    </changeSet>
+
+    <changeSet id="events-1.1" author="karpovich.e">
+        <sql>
+            alter table EVENTS
+            add constraint org_location unique(organizer, location);
         </sql>
     </changeSet>
 
