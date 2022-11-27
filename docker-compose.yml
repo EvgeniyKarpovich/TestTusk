@@ -1,0 +1,38 @@
+version: "3.4"
+
+volumes:
+  postgresql-data:
+
+x-common-environment: &common-env
+  environment:
+    ACTIVE_PROFILE: ${ACTIVE_PROFILE}
+    POSTGRESQL_HOST: ${POSTGRESQL_HOST}
+    POSTGRESQL_PORT: ${POSTGRESQL_PORT}
+    JAVA_OPTS: "
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${DEFAULT_DEBUG_PORT} \
+        -Djava.rmi.server.hostname=${DOCKER_IP} \ "
+
+services:
+  testtusk-postgresql:
+    container_name: testtusk-postgresql
+    image: postgres:14
+    #при збое перезапуск контейнера (всегда)
+    restart: always
+    ports:
+      - ${POSTGRESQL_PORT}:${DEFAULT_POSTGRESQL_PORT} #проброс порта
+    volumes: # сохраняет данные из базы на жестком диске
+      - postgresql-data:/var/lib/postgresql/data
+      - ./postgresql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  testtusk:
+    container_name: testtusk
+    build: ./../testTusk
+    restart: always
+    ports:
+      - ${testTusk_TOMCAT_PORT}:${DEFAULT_TOMCAT_PORT}
+      - ${testTusk_DEBUG_PORT}:${DEFAULT_DEBUG_PORT}
+    depends_on: #предварительно поднимет этот контейнер если он не активен, сюда залетают необходимые для работы приложения контейнеры
+      - testtusk-postgresql
+    <<: *common-env
