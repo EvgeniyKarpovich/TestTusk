@@ -28,6 +28,6 @@ public interface EventMapper {
     default String map(Instant instant) {
         return instant == null ? null :
                 instant.atOffset(ZoneOffset.UTC)
-                        .format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+                        .format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
     }
 }
