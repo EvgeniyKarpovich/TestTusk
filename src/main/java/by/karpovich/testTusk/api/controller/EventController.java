@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -22,14 +23,14 @@ public class EventController {
     EventService eventService;
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody EventDto eventDto) {
+    public ResponseEntity<?> save(@RequestBody @Valid EventDto eventDto) {
         eventService.saveEvent(eventDto);
 
         return new ResponseEntity<>("Event saved successfully", HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody EventDto eventDto,
+    public ResponseEntity<?> update(@RequestBody @Valid EventDto eventDto,
                                     @PathVariable("id") Long id) {
         EventDto update = eventService.update(id, eventDto);
 
