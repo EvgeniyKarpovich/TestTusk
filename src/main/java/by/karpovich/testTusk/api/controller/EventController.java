@@ -68,7 +68,7 @@ public class EventController {
         }
     }
 
-    @GetMapping("/byDate/{date}")
+    @GetMapping("/search/byDate/{date}")
     public ResponseEntity<?> findAllDate(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size, @PathVariable("date") String date) {
         Map<String, Object> all = eventService.findAllByDate(page, size, date);
@@ -80,7 +80,7 @@ public class EventController {
         }
     }
 
-    @GetMapping("/byThemeOrOrganizer")
+    @GetMapping("/search/byCriteria")
     public ResponseEntity<?> findByCriteria(EventCriteriaDto eventCriteriaDto) {
         List<EventDto> allByCriteria = eventService.findAllByCriteria(eventCriteriaDto);
 

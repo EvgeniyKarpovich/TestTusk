@@ -93,14 +93,14 @@ public class EventService {
         return response;
     }
 
-    public Map<String, Object> findAllByDate(int page, int size, String criteria) {
+    public Map<String, Object> findAllByDate(int page, int size, String date) {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<EventModel> eventModels = eventRepository.findAll(pageable);
         List<EventModel> content = eventModels.getContent();
         List<EventDto> eventDtoList = eventMapper.mapFromListEntity(content);
 
-        List<EventDto> sortByTimeSpending = findByDate(eventDtoList, criteria);
+        List<EventDto> sortByTimeSpending = findByDate(eventDtoList, date);
 
         Map<String, Object> response = new HashMap<>();
 
@@ -120,21 +120,21 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    public List<EventDto> findByTheme(List<EventDto> eventDtoList, String criteria) {
+    public List<EventDto> findByTheme(List<EventDto> eventDtoList, String theme) {
         return eventDtoList.stream()
-                .filter(eventDto -> eventDto.getTheme().matches("(?i).*" + criteria + ".*"))
+                .filter(eventDto -> eventDto.getTheme().matches("(?i).*" + theme + ".*"))
                 .collect(Collectors.toList());
     }
 
-    public List<EventDto> findByOrganizer(List<EventDto> eventDtoList, String criteria) {
+    public List<EventDto> findByOrganizer(List<EventDto> eventDtoList, String organizer) {
         return eventDtoList.stream()
-                .filter(eventDto -> eventDto.getOrganizer().matches("(?i).*" + criteria + ".*"))
+                .filter(eventDto -> eventDto.getOrganizer().matches("(?i).*" + organizer + ".*"))
                 .collect(Collectors.toList());
     }
 
-    public List<EventDto> findByDate(List<EventDto> eventDtoList, String criteria) {
+    public List<EventDto> findByDate(List<EventDto> eventDtoList, String date) {
         return eventDtoList.stream()
-                .filter(eventDto -> eventDto.getTimeSpending().startsWith(criteria))
+                .filter(eventDto -> eventDto.getTimeSpending().startsWith(date))
                 .collect(Collectors.toList());
     }
 
