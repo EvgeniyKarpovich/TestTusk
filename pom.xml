@@ -23,6 +23,7 @@
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <maven-compiler-plugin.source>11</maven-compiler-plugin.source>
         <maven-compiler-plugin.target>11</maven-compiler-plugin.target>
+        <validation-api.version>2.0.1.Final</validation-api.version>
     </properties>
 
     <dependencies>
@@ -53,6 +54,11 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api.version}</version>
         </dependency>
     </dependencies>
 
