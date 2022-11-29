@@ -72,23 +72,24 @@ public class EventService {
         return eventMapper.mapFromListEntity(eventModels);
     }
 
-    public Map<String, Object> findAllSortByDate(int page, int size) {
+    public Map<String, Object> findAllSort(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<EventModel> eventModels = eventRepository.findAll(pageable);
         List<EventModel> content = eventModels.getContent();
-        List<EventDto> eventDtoList = eventMapper.mapFromListEntity(content);
 
-        List<EventDto> sortByTimeSpending = sortByTimeSpending(eventDtoList);
+        List<EventModel> sortEvent = sortEvent(content);
+
+        List<EventDto> eventDtoList = eventMapper.mapFromListEntity(sortEvent);
 
         Map<String, Object> response = new HashMap<>();
 
-        response.put("tutorials", sortByTimeSpending);
+        response.put("tutorials", eventDtoList);
         response.put("currentPage", eventModels.getNumber());
         response.put("totalItems", eventModels.getTotalElements());
         response.put("totalPages", eventModels.getTotalPages());
 
-        log.info("IN findAll - the number events = {}", eventDtoList.size());
+        log.info("IN findAll - the number events = {}", sortEvent.size());
 
         return response;
     }
@@ -114,21 +115,12 @@ public class EventService {
         return response;
     }
 
-    public List<EventDto> sortByTimeSpending(List<EventDto> eventDtoList) {
+    //Сортировка события , приоритет дата, затем тема и организатор (без учета регистра)
+    public List<EventModel> sortEvent(List<EventModel> eventDtoList) {
         return eventDtoList.stream()
-                .sorted(Comparator.comparing(EventDto::getTimeSpending))
-                .collect(Collectors.toList());
-    }
-
-    public List<EventDto> findByTheme(List<EventDto> eventDtoList, String theme) {
-        return eventDtoList.stream()
-                .filter(eventDto -> eventDto.getTheme().matches("(?i).*" + theme + ".*"))
-                .collect(Collectors.toList());
-    }
-
-    public List<EventDto> findByOrganizer(List<EventDto> eventDtoList, String organizer) {
-        return eventDtoList.stream()
-                .filter(eventDto -> eventDto.getOrganizer().matches("(?i).*" + organizer + ".*"))
+                .sorted(Comparator.comparing(EventModel::getTimeSpending)
+                        .thenComparing((a, b) -> a.getTheme().compareToIgnoreCase(b.getTheme()))
+                        .thenComparing((a, b) -> a.getOrganizer().compareToIgnoreCase(b.getOrganizer())))
                 .collect(Collectors.toList());
     }
 
@@ -144,5 +136,24 @@ public class EventService {
             throw new DuplicateException(String.format("such event already exist", eventDto.getTheme()));
         }
     }
+
+    public List<EventModel> sortByTheme(List<EventModel> eventDtoList) {
+        return eventDtoList.stream()
+                .sorted(Comparator.comparing(EventModel::getTheme))
+                .collect(Collectors.toList());
+    }
+
+    public List<EventModel> sortByDate(List<EventModel> eventDtoList) {
+        return eventDtoList.stream()
+                .sorted(Comparator.comparing(EventModel::getTimeSpending))
+                .collect(Collectors.toList());
+    }
+
+    public List<EventModel> sortByOrganizer(List<EventModel> eventDtoList) {
+        return eventDtoList.stream()
+                .sorted(Comparator.comparing(EventModel::getOrganizer))
+                .collect(Collectors.toList());
+    }
+
 
 }

@@ -59,7 +59,7 @@ public class EventController {
     @GetMapping
     public ResponseEntity<?> findAll(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "10") int size) {
-        Map<String, Object> all = eventService.findAllSortByDate(page, size);
+        Map<String, Object> all = eventService.findAllSort(page, size);
 
         if (all.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -70,7 +70,7 @@ public class EventController {
 
     @GetMapping("/search/byDate/{date}")
     public ResponseEntity<?> findAllDate(@RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size, @PathVariable("date") String date) {
+                                         @RequestParam(defaultValue = "10") int size, @PathVariable("date") String date) {
         Map<String, Object> all = eventService.findAllByDate(page, size, date);
 
         if (all.isEmpty()) {
