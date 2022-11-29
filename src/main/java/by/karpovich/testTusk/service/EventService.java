@@ -66,6 +66,7 @@ public class EventService {
         return eventMapper.mapFromEntity(event);
     }
 
+    //поиск по критериям(тема и организатор)
     public List<EventDto> findAllByCriteria(EventCriteriaDto eventCriteriaDto) {
         List<EventModel> eventModels = eventRepository.findAll(EventSpecification.createFromCriteria(eventCriteriaDto));
         log.info("IN findAll - the number events  = {}", eventModels.size());
